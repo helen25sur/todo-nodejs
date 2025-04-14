@@ -1,0 +1,161 @@
+@import url(https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap);
+
+body {
+  color: #575767;
+  font-family: Inter, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px
+}
+
+body .todo-app {
+  margin: 0 auto;
+  max-width: 80%
+}
+
+body .todo-app .btn,
+body .todo-app .form-control {
+  border: 1px solid #ebebeb;
+  margin: 4px 8px;
+  padding: 8px 16px
+}
+
+body .todo-app .btn {
+  background-color: #f2f3ff
+}
+
+.todo-app .btn.btn-danger {
+  border-color: #fb7f7f;
+}
+
+.todo-app .btn.btn-edit {
+  border-color: #ffce00;
+}
+
+body .todo-app .top-panel {
+  display: flex
+}
+
+header h1,
+header h2 {
+  letter-spacing: 0;
+  line-height: auto
+}
+
+header h1 {
+  color: #000;
+  font-size: 56px;
+  font-weight: 800
+}
+
+header h2 {
+  font-size: 16px;
+  font-weight: 600
+}
+
+hr {
+  border: 1px solid #ebebeb
+}
+
+.btn-group-filter {
+  display: flex;
+  justify-content: flex-end;
+  margin: 12px 0;
+}
+
+.btn-group-filter .btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.filter-icon {
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+}
+
+.todo-list {
+  list-style: none;
+  margin: 0 4px;
+  padding: 0
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.list-group-item[data-status] {
+  padding-left: 24px;
+  background-repeat: no-repeat;
+  background-position: 0 2px;
+  background-size: 20px 20px;
+}
+
+.list-group-item[data-status="done"] {
+  text-decoration: line-through;
+  background-image: url('/images/icons/check.svg');
+}
+
+.list-group-item[data-status="in-progress"] {
+  background-image: url('/images/icons/in-progress.svg');
+}
+
+.list-group-item[data-status="todo"] {
+  background-image: url('/images/icons/todo.svg');
+}
+
+.todo-list-item {
+  display: flex;
+  align-items: center;
+  margin-left: 8px
+}
+
+.todo-list-item .todo-list-item-label {
+  margin-right: auto
+}
+
+.todo-list-item button {
+  margin-right: 5px
+}
+
+.panel-add-item {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  width: 100%;
+}
+
+.panel-add-item-block {
+  display: flex;
+  width: 100%;
+
+}
+.panel-add-item-block select {
+  width: 33%;
+}
+
+.panel-add-item .panel-add-item-input {
+  flex: 100%;
+  font: inherit;
+  font-size: 14px;
+}
+
+.panel-add-item button[type=submit] {
+  padding: 8px 40px
+}
+
+.svg-inline--fa {
+  width: 12px;
+  height: 12px;
+}
+
+.alert-danger {
+  border: 1px solid #fb7f7f;
+  background: #ffeaea;
+}

@@ -1,0 +1,95 @@
+<%- include('includes/start.ejs') %>
+      <header class="app-header">
+        <h1>Todo List</h1>
+        <span><%= length  %> need to do, <%= done  %> done</span>
+        <hr>
+      </header>
+
+      <main>
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+          <div class="alert alert-danger">
+            <ul>
+              <% errors.forEach(error => { %>
+                <li><%= error %></li>
+              <% }) %>
+            </ul>
+          </div>
+        <% } %>
+        <form action="/tasks" method="POST" class="panel-add-item">
+          <div class="panel-add-item-block">
+            <input class="form-control panel-add-item-input"
+            type="text" placeholder="Write title of your task" aria-label="add task title" name="title" autocomplete="on" value="<%= typeof formData !== 'undefined' ? formData.title : '' %>">
+            <select class="form-control" name="status">
+              <option value="todo" <%= formData?.status === 'todo' ? 'selected' : '' %>>ToDo</option>
+              <option value="in-progress" <%= formData?.status === 'in-progress' ? 'selected' : '' %>>In progress</option>
+              <option value="done" <%= formData?.status === 'done' ? 'selected' : '' %>>Done</option>
+            </select>
+          </div>
+          
+          <textarea class="form-control panel-add-item-input" name="description" id="" aria-label="add task description" rows="2" placeholder="Write description of your task" autocomplete="on"><%= typeof formData !== 'undefined' ? formData.description : '' %></textarea>
+          <button type="submit"
+            class="btn btn-warning ms-2">Add</button>
+        </form>
+        <hr>
+        <div class="btn-group-filter" role="group">
+          <a href="/tasks" type="button" class="btn">
+            <img class="filter-icon" src="/images/icons/edit.svg" alt="All">
+            All</a>
+          <a href="/tasks?status=todo" type="button" class="btn">
+            <img class="filter-icon" src="/images/icons/todo.svg" alt="To Do">
+            To Do</a>
+          <a href="/tasks?status=in-progress" type="button" class="btn">
+            <img class="filter-icon" src="/images/icons/in-progress.svg" alt="To Do">
+            In Process</a>
+          <a href="/tasks?status=done" type="button" class="btn">
+            <img class="filter-icon" src="/images/icons/check.svg" alt="To Do">
+            Done</a>
+        </div>
+        <ul class="todo-list">
+          <% tasks.forEach(task => { %>
+           <li class="list-group-item" data-status="<%= task.status %>">
+            <a href="/tasks/<%= task.id %>">
+            <h3><%= task.title %></h3></a>
+            <span class="todo-list-item"><span class="todo-list-item-label"><%= task.description %></span>
+            <% if (!task.modifiedAt) { %>
+              <% 
+              const dateCreated = new Date(task.createdAt);
+              const date = `${String(dateCreated.getDate()).padStart(2, '0')}/${String(dateCreated.getMonth() + 1).padStart(2, '0')}/${dateCreated.getFullYear().toString().slice(2)}`;
+              const time = `${String(dateCreated.getHours()).padStart(2, '0')}:${String(dateCreated.getMinutes()).padStart(2, '0')}:${String(dateCreated.getSeconds()).padStart(2, '0')}`;
+              const line = `[${date} ${time}]`;
+              %>
+  
+              <span>Created: <%= line %>    </span>
+            <% } else { %>
+              <% 
+              const dateModified = new Date(task.modifiedAt);
+
+              const date = `${String(dateModified.getDate()).padStart(2, '0')}/${String(dateModified.getMonth() + 1).padStart(2, '0')}/${dateModified.getFullYear().toString().slice(2)}`;
+              const time = `${String(dateModified.getHours()).padStart(2, '0')}:${String(dateModified.getMinutes()).padStart(2, '0')}:${String(dateModified.getSeconds()).padStart(2, '0')}`;
+              const line2 = `[${date} ${time}]`;
+               %>
+              <span>Modified: <%= line2 %>    </span>
+            <% } %>
+            <button type="button" class="btn btn-edit btn-sm">
+              <img src="/images/icons/edit.svg" alt="edit" aria-hidden="true"
+              focusable="false" data-prefix="fas" data-icon="trash-can" class="svg-inline--fa fa-trash-can ">
+              </button>
+              <button type="button" class="btn btn-danger btn-sm">
+                <img src="/images/icons/delete.svg"  alt="delete" aria-hidden="true"
+                focusable="false" data-prefix="fas" data-icon="trash-can" class="svg-inline--fa fa-trash-can ">
+              </button></span>
+            <input type="hidden" name="id" value="<%= task.id %>">
+            </li>
+            <hr>
+          <% }) %>
+          
+
+        </ul>
+
+      </main>
+
+    </div>
+  </div>
+</body>
+
+</html>

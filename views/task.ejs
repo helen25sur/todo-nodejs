@@ -1,0 +1,23 @@
+<%- include('includes/start.ejs') %>
+  <main>
+    <h1><%= task.title %></h1>
+    <h2><%= task.description %></h2>
+    <% 
+    const dateCreated = new Date(task.createdAt);
+    const date = `${String(dateCreated.getDate()).padStart(2, '0')}/${String(dateCreated.getMonth() + 1).padStart(2, '0')}/${dateCreated.getFullYear().toString().slice(2)}`;
+    const time = `${String(dateCreated.getHours()).padStart(2, '0')}:${String(dateCreated.getMinutes()).padStart(2, '0')}:${String(dateCreated.getSeconds()).padStart(2, '0')}`;
+    const line = `[${date} ${time}]`;
+    %>
+    <span>
+      <%= line %>
+    </span>
+    <hr>
+    <a href="/" class="btn">To Home Page</a>
+  </main>
+
+
+  </div>
+  </div>
+  </body>
+
+  </html>
