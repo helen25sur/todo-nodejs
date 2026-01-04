@@ -11,15 +11,14 @@ const {  v4: uuidv4 } = require('uuid');
 
 const writeJson = require('../utils/writeJson');
 const getTasks = require('../utils/getJson');
+const deleteTaskJson = require('../utils/deleteTaskJson');
 const validateTask = require('../utils/taskValidator');
 
 const router = express.Router();
 
-const pathFile = path.join(__dirname, '..', 'data', 'tasks.json');
-
 router.get('/:id', async (req, res, next) => {
   const id = req.params.id;
-  const tasks = await getTasks(pathFile);
+  const tasks = await getTasks();
   const task = tasks.find(item => item.id === id);
   if (!task) {
     return res.status(404).render('404', {message: 'Task not found'});
@@ -29,13 +28,13 @@ router.get('/:id', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   const errors = validateTask(req.body);
-  const tasks = await getTasks(pathFile);
+  const tasks = await getTasks();
 
   if (errors.length > 0) {
     const task = tasks.find(t => t.id === req.params.id);
     return res.status(400).render('index', {
       task: { ...task, ...req.body },
-      tasks: tasks,
+      tasks: tasks && Array.isArray(tasks) ? tasks : [],
       errors,
       formData: {}
     });
@@ -59,21 +58,18 @@ router.put('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   const id = req.params.id;
-  const tasks = await getTasks(pathFile);
-  const newTasks = tasks.filter(item => item.id !== id);
-
-  await writeJson(pathFile, newTasks);
+  await deleteTaskJson(id);
   res.redirect('/');
 });
 
 router.post('/', async (req, res, next) => {
   const errors = validateTask(req.body);
-  const tasks = await getTasks(pathFile);
+  const tasks = await getTasks();
 
   if (errors.length > 0) {
     return res.status(400).render('index', {
-      tasks,
-      length: tasks.length,
+      tasks: tasks && Array.isArray(tasks) ? tasks : [],
+      length: tasks && Array.isArray(tasks) ? tasks.length : 0,
       errors,
       formData: req.body
     });
@@ -88,14 +84,14 @@ router.post('/', async (req, res, next) => {
   };
   tasks.push(taskObj);
   
-  await writeJson(pathFile, tasks);
+  await writeJson(tasks);
   res.redirect('/');
 });
 
 router.get('/', async (req, res, next) => {
   if (req.query.status !== undefined) {
     try {
-      const tasks = await getTasks(pathFile);
+      const tasks = await getTasks();
       const filterTasks = tasks.filter(t => t.status === req.query.status)
       res.render('index', {
         'tasks': filterTasks,

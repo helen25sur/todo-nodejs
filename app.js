@@ -33,9 +33,9 @@ app.use('/', async(req, res, next) => {
   try {
     const tasks = await getTasks();
     res.render('index', {
-      'tasks': tasks,
-      'length': tasks.length, 
-      done: tasks.filter(t => t.status === 'done').length,
+      'tasks': tasks && Array.isArray(tasks) ? tasks : [],
+      'length': tasks && Array.isArray(tasks) ? tasks.length : 0, 
+      done: tasks && Array.isArray(tasks) ? tasks.filter(t => t.status === 'done').length : [],
       errors: [],
       formData: {}
     });

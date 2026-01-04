@@ -18,9 +18,15 @@ async function getTasks() {
     }
 
     const data = await response.json();
-    return data.record["tasks"];
+    console.log(data.record.tasks);
+    if (!data.record || !data.record.tasks || !Array.isArray(data.record.tasks)) {
+      console.warn("Дані не містять очікуваної структури 'tasks'.");
+      return [];
+    }
+    return data.record.tasks || [];
   } catch (error) {
     console.error("Помилка мережі:", error);
+    return [];
   }
 }
 
