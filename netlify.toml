@@ -9,5 +9,5 @@
   status = 200
 
 [functions]
-  node_bundle = true
+  [functions.node_bundle]
   included_files = ["views/**", "public/**"]
