@@ -4,7 +4,7 @@
   publish = "public"      # Папка з твоїм фронтендом (якщо є)
 
 [[redirects]]
-  from = "/api/*"
+  from = "/*"
   to = "/.netlify/functions/app"
   status = 200
 
