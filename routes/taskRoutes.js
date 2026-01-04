@@ -9,8 +9,8 @@ const path = require('path');
 const express = require('express');
 const {  v4: uuidv4 } = require('uuid'); 
 
-const writeFileJson = require('../utils/writeFileJson');
-const readFileJson = require('../utils/readFileJson');
+const writeJson = require('../utils/writeJson');
+const getTasks = require('../utils/getJson');
 const validateTask = require('../utils/taskValidator');
 
 const router = express.Router();
@@ -19,7 +19,7 @@ const pathFile = path.join(__dirname, '..', 'data', 'tasks.json');
 
 router.get('/:id', async (req, res, next) => {
   const id = req.params.id;
-  const tasks = await readFileJson(pathFile);
+  const tasks = await getTasks(pathFile);
   const task = tasks.find(item => item.id === id);
   if (!task) {
     return res.status(404).render('404', {message: 'Task not found'});
@@ -29,7 +29,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   const errors = validateTask(req.body);
-  const tasks = await readFileJson(pathFile);
+  const tasks = await getTasks(pathFile);
 
   if (errors.length > 0) {
     const task = tasks.find(t => t.id === req.params.id);
@@ -53,22 +53,22 @@ router.put('/:id', async (req, res, next) => {
   task.status = task.status !== req.body.status ? req.body.status : task.status;
   task.modifiedAt = new Date();
 
-  await writeFileJson(pathFile, tasks);
+  await writeJson(tasks);
   res.redirect('/');
 });
 
 router.delete('/:id', async (req, res, next) => {
   const id = req.params.id;
-  const tasks = await readFileJson(pathFile);
+  const tasks = await getTasks(pathFile);
   const newTasks = tasks.filter(item => item.id !== id);
 
-  await writeFileJson(pathFile, newTasks);
+  await writeJson(pathFile, newTasks);
   res.redirect('/');
 });
 
 router.post('/', async (req, res, next) => {
   const errors = validateTask(req.body);
-  const tasks = await readFileJson(pathFile);
+  const tasks = await getTasks(pathFile);
 
   if (errors.length > 0) {
     return res.status(400).render('index', {
@@ -88,14 +88,14 @@ router.post('/', async (req, res, next) => {
   };
   tasks.push(taskObj);
   
-  await writeFileJson(pathFile, tasks);
+  await writeJson(pathFile, tasks);
   res.redirect('/');
 });
 
 router.get('/', async (req, res, next) => {
   if (req.query.status !== undefined) {
     try {
-      const tasks = await readFileJson(pathFile);
+      const tasks = await getTasks(pathFile);
       const filterTasks = tasks.filter(t => t.status === req.query.status)
       res.render('index', {
         'tasks': filterTasks,

@@ -1,4 +1,5 @@
-// Зробити REST API на Express для керування завданнями, де всі дані зберігаються у файлі tasks.json. API має повністю працювати з цим файлом: при кожній зміні — перезапис, при кожному читанні — зчитування з файлу.
+require('dotenv').config();
+
 const path = require('path');
 
 const methodOverride = require('method-override');
@@ -7,7 +8,7 @@ const bodyParser = require('body-parser');
 
 const tasksRouter = require('./routes/taskRoutes');
 const errorsRouter = require('./routes/errorsRoutes');
-const readFileJson = require('./utils/readFileJson');
+const getTasks = require('./utils/getJson');
 const logger = require('./utils/logger');
 
 const app = express();
@@ -26,13 +27,11 @@ app.use(methodOverride(function (req, res) {
 
 app.use(logger);
 
-const pathFile = path.join(__dirname, 'data', 'tasks.json');
-
 app.use('/tasks', tasksRouter);
 
 app.use('/', async(req, res, next) => {
   try {
-    const tasks = await readFileJson(pathFile);
+    const tasks = await getTasks();
     res.render('index', {
       'tasks': tasks,
       'length': tasks.length, 
