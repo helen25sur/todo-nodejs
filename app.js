@@ -59,6 +59,7 @@ router.use(errorsRouter);
 
 // ВАЖЛИВО: Весь додаток працює через цей шлях на Netlify
 app.use('/.netlify/functions/app', router); 
+app.use('/', router);
 
 // Експортуємо обробник для Netlify
 module.exports.handler = serverless(app);
