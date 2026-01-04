@@ -1,17 +1,35 @@
 @import url(https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap);
 :root {
   --color-text: #575767;
-  --color-heading: #000000;
+  --color-heading: #101010;
   --color-secondary: #f2f3ff;
   --color-edit: #ffce00;
   --color-danger: #fb7f7f;
   --alert-danger-border: #fb7f7f;
   --alert-danger-background: #ffeaea;
-  --color-background: #ffffff;
+  --color-background: #f8f8f8;
   --color-border: #ebebeb;
 }
+
+body.dark {
+  --color-background: #1a1a1a;        
+  --color-text: #b0b0b0;              
+  --color-heading: #f7f7f7;           
+  --color-secondary: #2d2d2d;         
+  --color-border: #333333;            
+  --color-edit: #e6b800;             
+  --color-danger: #ff6b6b;            
+  --alert-danger-background: #3d1c1c;
+  --alert-danger-border: #fb7f7f;  
+}
+
+body, div, input, select, textarea, button {
+  transition: all 0.3s ease;
+}
+
 body {
   color: var(--color-text);
+  background-color: var(--color-background);
   font-family: Inter, sans-serif;
   font-size: 18px;
   font-weight: 500;
@@ -20,14 +38,22 @@ body {
 
 body .todo-app {
   margin: 0 auto;
-  max-width: 80%
+  max-width: 80%;
 }
 
 body .todo-app .btn,
 body .todo-app .form-control {
   border: 1px solid var(--color-border);
   margin: 4px 8px;
-  padding: 8px 16px
+  padding: 8px 16px;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font: inherit;
+}
+
+body .todo-app .form-control::placeholder {
+  color: var(--color-text);
+  opacity: 0.8;
 }
 
 body .todo-app .btn {
@@ -65,6 +91,10 @@ header h2 {
 
 hr {
   border: 1px solid var(--color-border);
+}
+
+.btn {
+  cursor: pointer;
 }
 
 .btn-group-filter {
@@ -178,6 +208,51 @@ textarea#description {
   resize: vertical;
   overflow: auto;
   flex: none;
+}
+
+.btn svg {
+  display: inline-block;
+  margin-right: 4px;
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  fill: var(--color-text);
+}
+
+svg.todo-icon {
+  fill: var(--alert-danger-border);
+}
+
+svg.process-icon {
+  fill: var(--color-edit);
+}
+
+svg.done-icon {
+  fill: #158815;
+}
+svg.edit-icon, 
+svg.delete-icon {
+  margin-right: 0;
+}
+
+.change-theme-btn {
+  position: fixed;
+  top: 20px;
+  right: 16px;
+  margin: 4px;
+  padding: 8px;
+  border: 1px solid var(--color-text);
+  background-color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.change-theme-icon {
+  width: 24px;
+  height: 24px;
+  fill: var(--color-text);
 }
 
 @media screen and (max-width: 676px) {
