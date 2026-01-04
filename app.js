@@ -4,6 +4,7 @@ const path = require('path');
 const methodOverride = require('method-override');
 const express = require('express');
 const bodyParser = require('body-parser');
+const ejs = require('ejs');
 
 const tasksRouter = require('./routes/taskRoutes');
 const errorsRouter = require('./routes/errorsRoutes');
