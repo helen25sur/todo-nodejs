@@ -1,0 +1,12 @@
+[functions]
+  included_files = ["views/**", "public/**"]
+
+[build]
+  command = "npm install" # Команда для встановлення залежностей
+  functions = "."       # Папка, де лежить твій основний файл (наприклад, server.js)
+  publish = "public"      # Папка з твоїм фронтендом (якщо є)
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/server/:splat"
+  status = 200

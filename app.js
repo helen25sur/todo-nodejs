@@ -1,7 +1,6 @@
+const serverless = require('serverless-http');
 require('dotenv').config();
-
 const path = require('path');
-
 const methodOverride = require('method-override');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -12,41 +11,61 @@ const getTasks = require('./utils/getJson');
 const logger = require('./utils/logger');
 
 const app = express();
-const port = 3000;
 
 app.set('view engine', 'ejs');
-app.set('views', 'views');
+// Використовуємо абсолютний шлях для views
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(methodOverride(function (req, res) {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-    return req.body._method;
+    var method = req.body._method;
+    delete req.body._method;
+    return method;
   }
 }));
 
 app.use(logger);
 
-app.use('/tasks', tasksRouter);
+// Створюємо головний роутер для Netlify
+const router = express.Router();
 
-app.use('/', async(req, res, next) => {
+router.use('/tasks', tasksRouter);
+
+router.get('/', async (req, res) => {
   try {
-    const tasks = await getTasks();
+    const tasksData = await getTasks();
+    // Переконуємося, що беремо масив tasks з об'єкта record
+    const tasks = tasksData.tasks || tasksData; 
+    
     res.render('index', {
-      'tasks': tasks && Array.isArray(tasks) ? tasks : [],
-      'length': tasks && Array.isArray(tasks) ? tasks.length : 0, 
-      done: tasks && Array.isArray(tasks) ? tasks.filter(t => t.status === 'done').length : [],
+      tasks: Array.isArray(tasks) ? tasks : [],
+      length: Array.isArray(tasks) ? tasks.length : 0,
+      done: Array.isArray(tasks) ? tasks.filter(t => t.status === 'done').length : 0,
       errors: [],
       formData: {}
     });
-
   } catch (error) {
-    console.error(error);
+    console.error("Render Error:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
-app.use(errorsRouter);
+// Підключаємо помилки до роутера
+router.use(errorsRouter);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// ВАЖЛИВО: Весь додаток працює через цей шлях на Netlify
+app.use('/.netlify/functions/app', router); 
+
+// Експортуємо обробник для Netlify
+module.exports.handler = serverless(app);
+
+// Тільки для локальної розробки
+if (process.env.NODE_ENV !== 'production') {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Local server running on http://localhost:${port}`);
+  });
+}
