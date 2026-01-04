@@ -13,7 +13,7 @@ const logger = require('./utils/logger');
 
 const app = express();
 
-app.set('views', path.join(process.cwd(), 'views'));
+app.set('views', path.join(process.cwd(), 'public', 'views'));
 app.set('view engine', 'ejs');
 // Використовуємо абсолютний шлях для views
 // app.set('views', path.join(__dirname, 'views'));
@@ -22,8 +22,8 @@ app.set('view engine', 'ejs');
 // Ми перевіряємо, де ми реально знаходимося
 const isProduction = process.env.NODE_ENV === 'production';
 const viewsPath = isProduction 
-  ? path.join(process.cwd(), 'views') 
-  : path.join(__dirname, 'views');
+  ? path.join(process.cwd(), 'public', 'views') 
+  : path.join(__dirname, 'public', 'views');
 
 app.set('views', viewsPath);
 app.set('view engine', 'ejs');
@@ -31,7 +31,7 @@ app.set('view engine', 'ejs');
 // ДОДАЙ ЦЕЙ ТЕСТ: він покаже в логах, чи бачить сервер файли
 try {
   const files = fs.readdirSync(viewsPath);
-  console.log("Знайдені файли у views:", files);
+  console.log("Знайдені файли у public/views:", files);
 } catch (e) {
   console.log("❌ Не вдалося прочитати папку views за шляхом:", viewsPath);
 }

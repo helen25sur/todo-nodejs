@@ -10,4 +10,4 @@
 
 [functions]
   [functions.node_bundle]
-  included_files = ["views/**", "public/**"]
+  included_files = ["public/views/**"]
