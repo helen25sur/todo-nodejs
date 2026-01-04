@@ -1,7 +1,17 @@
 @import url(https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap);
-
+:root {
+  --color-text: #575767;
+  --color-heading: #000000;
+  --color-secondary: #f2f3ff;
+  --color-edit: #ffce00;
+  --color-danger: #fb7f7f;
+  --alert-danger-border: #fb7f7f;
+  --alert-danger-background: #ffeaea;
+  --color-background: #ffffff;
+  --color-border: #ebebeb;
+}
 body {
-  color: #575767;
+  color: var(--color-text);
   font-family: Inter, sans-serif;
   font-size: 18px;
   font-weight: 500;
@@ -15,21 +25,21 @@ body .todo-app {
 
 body .todo-app .btn,
 body .todo-app .form-control {
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--color-border);
   margin: 4px 8px;
   padding: 8px 16px
 }
 
 body .todo-app .btn {
-  background-color: #f2f3ff
+  background-color: var(--color-secondary)
 }
 
 .todo-app .btn.btn-danger {
-  border-color: #fb7f7f;
+  border-color: var(--color-danger);
 }
 
 .todo-app .btn.btn-edit {
-  border-color: #ffce00;
+  border-color: var(--color-edit);
 }
 
 body .todo-app .top-panel {
@@ -43,7 +53,7 @@ header h2 {
 }
 
 header h1 {
-  color: #000;
+  color: var(--color-heading);
   font-size: 56px;
   font-weight: 800
 }
@@ -54,7 +64,7 @@ header h2 {
 }
 
 hr {
-  border: 1px solid #ebebeb
+  border: 1px solid var(--color-border);
 }
 
 .btn-group-filter {
@@ -156,8 +166,8 @@ a:hover {
 }
 
 .alert-danger {
-  border: 1px solid #fb7f7f;
-  background: #ffeaea;
+  border: 1px solid var(--alert-danger-border);
+  background: var(--alert-danger-background);
 }
 
 .span-timeline {
