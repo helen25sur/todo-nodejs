@@ -4,6 +4,7 @@ const path = require('path');
 const methodOverride = require('method-override');
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 const ejs = require('ejs');
 
 const tasksRouter = require('./routes/taskRoutes');
@@ -15,8 +16,6 @@ const app = express();
 
 app.set('views', path.join(process.cwd(), 'public', 'views'));
 app.set('view engine', 'ejs');
-// Використовуємо абсолютний шлях для views
-// app.set('views', path.join(__dirname, 'views'));
 
 // Netlify розпаковує функції в /var/task
 // Ми перевіряємо, де ми реально знаходимося
