@@ -1,11 +1,8 @@
-const serverless = require('serverless-http');
 require('dotenv').config();
 const path = require('path');
-const methodOverride = require('method-override');
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs');
-const ejs = require('ejs');
+const methodOverride = require('method-override');
 
 const tasksRouter = require('./routes/taskRoutes');
 const errorsRouter = require('./routes/errorsRoutes');
@@ -14,55 +11,37 @@ const logger = require('./utils/logger');
 
 const app = express();
 
-app.set('views', path.join(process.cwd(), 'public', 'views'));
+// 1. Повертаємо нормальні шляхи (views має бути в корені, не в public)
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-// Netlify розпаковує функції в /var/task
-// Ми перевіряємо, де ми реально знаходимося
-const isProduction = process.env.NODE_ENV === 'production';
-const viewsPath = isProduction 
-  ? path.join(process.cwd(), 'public', 'views') 
-  : path.join(__dirname, 'public', 'views');
-
-app.set('views', viewsPath);
-app.set('view engine', 'ejs');
-
-// ДОДАЙ ЦЕЙ ТЕСТ: він покаже в логах, чи бачить сервер файли
-try {
-  const files = fs.readdirSync(viewsPath);
-  console.log("Знайдені файли у public/views:", files);
-} catch (e) {
-  console.log("❌ Не вдалося прочитати папку views за шляхом:", viewsPath);
-}
-
-app.use(bodyParser.urlencoded({ extended: false }));
+// 2. Налаштування статики та парсингу
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(methodOverride(function (req, res) {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-    var method = req.body._method;
+    const method = req.body._method;
     delete req.body._method;
     return method;
   }
 }));
 
+// 3. Логер
 app.use(logger);
 
-// Створюємо головний роутер для Netlify
-const router = express.Router();
+// 4. Маршрути (просто і зрозуміло)
+app.use('/tasks', tasksRouter);
 
-router.use('/tasks', tasksRouter);
-
-router.get('/', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const tasksData = await getTasks();
-    // Переконуємося, що беремо масив tasks з об'єкта record
-    const tasks = tasksData.tasks || tasksData; 
+    const tasks = Array.isArray(tasksData) ? tasksData : (tasksData.tasks || []);
     
     res.render('index', {
-      tasks: Array.isArray(tasks) ? tasks : [],
-      length: Array.isArray(tasks) ? tasks.length : 0,
-      done: Array.isArray(tasks) ? tasks.filter(t => t.status === 'done').length : 0,
+      tasks: tasks,
+      length: tasks.length,
+      done: tasks.filter(t => t.status === 'done').length,
       errors: [],
       formData: {}
     });
@@ -72,20 +51,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Підключаємо помилки до роутера
-router.use(errorsRouter);
+// 5. Обробка помилок
+app.use(errorsRouter);
 
-// ВАЖЛИВО: Весь додаток працює через цей шлях на Netlify
-app.use('/.netlify/functions/app', router); 
-app.use('/', router);
-
-// Експортуємо обробник для Netlify
-module.exports.handler = serverless(app);
-
-// Тільки для локальної розробки
-if (process.env.NODE_ENV !== 'production') {
-  const port = process.env.PORT || 3000;
-  app.listen(port, () => {
-    console.log(`Local server running on http://localhost:${port}`);
-  });
-}
+// 6. Запуск сервера (Render сам призначає порт через змінну оточення)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
