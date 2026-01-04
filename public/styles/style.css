@@ -159,3 +159,50 @@ a:hover {
   border: 1px solid #fb7f7f;
   background: #ffeaea;
 }
+
+.span-timeline {
+  font-size: 16px;
+}
+
+textarea#description {
+  resize: vertical;
+  overflow: auto;
+  flex: none;
+}
+
+@media screen and (max-width: 676px) {
+  body .todo-app {
+    max-width: 95%;
+  }
+
+  body .todo-app .btn {
+    margin: 4px;
+    padding: 8px;
+  }
+
+  .btn-group-filter {
+    justify-content: space-between;
+  }
+
+  .span-timeline {
+    display: none;
+  }
+
+}
+
+@media screen and (max-width: 426px) { 
+  .panel-add-item-block {
+    flex-wrap: wrap;
+  }
+
+  select.form-control {
+    width: 100%;
+  }
+
+  .btn-group-filter {
+    flex-wrap: wrap;
+  }
+  .btn-group-filter .btn {
+    width: 40%;
+  }
+}

@@ -26,7 +26,7 @@
             </select>
           </div>
           
-          <textarea class="form-control panel-add-item-input" name="description" id="" aria-label="add task description" rows="2" placeholder="Write description of your task" autocomplete="on"><%= typeof formData !== 'undefined' ? formData.description : '' %></textarea>
+          <textarea class="form-control panel-add-item-input" name="description" id="description" aria-label="add task description" rows="2" placeholder="Write description of your task" autocomplete="on"><%= typeof formData !== 'undefined' ? formData.description : '' %></textarea>
           <button type="submit"
             class="btn btn-warning ms-2">Add</button>
         </form>
@@ -59,7 +59,7 @@
               const line = `[${date} ${time}]`;
               %>
   
-              <span>Created: <%= line %>    </span>
+              <span class="span-timeline">Created: <%= line %>    </span>
             <% } else { %>
               <% 
               const dateModified = new Date(task.modifiedAt);
@@ -68,7 +68,7 @@
               const time = `${String(dateModified.getHours()).padStart(2, '0')}:${String(dateModified.getMinutes()).padStart(2, '0')}:${String(dateModified.getSeconds()).padStart(2, '0')}`;
               const line2 = `[${date} ${time}]`;
                %>
-              <span>Modified: <%= line2 %>    </span>
+              <span class="span-timeline">Modified: <%= line2 %>    </span>
             <% } %>
             <button type="button" class="btn btn-edit btn-sm">
               <img src="/images/icons/edit.svg" alt="edit" aria-hidden="true"
