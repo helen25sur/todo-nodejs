@@ -11,7 +11,7 @@
   --color-border: #ebebeb;
 }
 
-body.dark {
+.dark {
   --color-background: #1a1a1a;        
   --color-text: #b0b0b0;              
   --color-heading: #f7f7f7;           
