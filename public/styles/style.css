@@ -2,20 +2,20 @@
 :root {
   --color-text: #575767;
   --color-heading: #101010;
-  --color-secondary: #f2f3ff;
+  --color-secondary: #f2f3ffb5;
   --color-edit: #ffce00;
   --color-danger: #fb7f7f;
   --alert-danger-border: #fb7f7f;
   --alert-danger-background: #ffeaea;
-  --color-background: #f8f8f8;
+  --color-background: #f8f8f894;
   --color-border: #ebebeb;
 }
 
 .dark {
-  --color-background: #1a1a1a;        
+  --color-background: #1a1a1afa;        
   --color-text: #b0b0b0;              
   --color-heading: #f7f7f7;           
-  --color-secondary: #2d2d2d;         
+  --color-secondary: #2d2d2db5;         
   --color-border: #333333;            
   --color-edit: #e6b800;             
   --color-danger: #ff6b6b;            
@@ -33,12 +33,46 @@ body {
   font-family: Inter, sans-serif;
   font-size: 18px;
   font-weight: 500;
-  line-height: 24px
+  line-height: 24px;
+  margin: 0;
 }
 
 body .todo-app {
   margin: 0 auto;
   max-width: 80%;
+}
+
+#root {
+  position: relative;
+  min-height: 100vh;
+
+}
+
+#root::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/glenn-carstens-peters-RLw-UC03Gwc-unsplash.jpg');
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  filter: blur(5px);
+  opacity: 0.3;
+}
+
+html.dark #root::before {
+  opacity: 0.1;
+}
+
+body .todo-app:has(.task-main) {
+  width: 80%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-55%, -75%);
 }
 
 body .todo-app .btn,
@@ -75,18 +109,25 @@ body .todo-app .top-panel {
 header h1,
 header h2 {
   letter-spacing: 0;
-  line-height: auto
 }
 
 header h1 {
   color: var(--color-heading);
   font-size: 56px;
-  font-weight: 800
+  line-height: 60px;
+  font-weight: 800;
+  padding: 2rem 0;
+  margin: 0;
 }
 
 header h2 {
   font-size: 16px;
   font-weight: 600
+}
+
+.task-main h1 {
+  font-size: 44px;
+  line-height: 48px;
 }
 
 hr {
@@ -95,6 +136,12 @@ hr {
 
 .btn {
   cursor: pointer;
+}
+
+.task-main .to-home-page {
+  display: inline-block;
+  margin-left: 0 !important;
+  margin-top: 1rem!important;
 }
 
 .btn-group-filter {
@@ -187,7 +234,8 @@ a:hover {
 }
 
 .panel-add-item button[type=submit] {
-  padding: 8px 40px
+  padding: 12px 40px;
+  font-size: 24px;
 }
 
 .svg-inline--fa {
